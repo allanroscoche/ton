@@ -70,6 +70,9 @@ module "lambda_function" {
 
   publish = true
 
+  attach_policy_json = true
+  policy_json = file("policy.json")
+
   allowed_triggers = {
     AllowExecutionFromAPIGateway = {
       service = "apigateway"
@@ -77,3 +80,19 @@ module "lambda_function" {
     }
   }
 }
+
+#######################################
+# DynamoDB 
+#######################################
+resource "aws_dynamodb_table" "ddbtable" {
+  name             = "ton-db"
+  hash_key         = "id"
+  billing_mode   = "PROVISIONED"
+  read_capacity  = 1
+  write_capacity = 1
+  attribute {
+    name = "id"
+    type = "S"
+  }
+}
+
