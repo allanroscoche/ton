@@ -13,7 +13,7 @@ exports.handler = async (event) => {
   let funcionario = new Funcionario(id);
   
   funcionario.nome = nome;
-  funcionario.idade = idade;
+  funcionario.idade = Number(idade);
   funcionario.cargo = cargo;
   await funcionario.save();
 

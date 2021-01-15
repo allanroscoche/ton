@@ -14,7 +14,7 @@ exports.handler = async (event) => {
     const funcionario = await Funcionario.find(id); 
     const { nome, idade, cargo } = parseBody(event.body);
     funcionario.nome = nome;
-    funcionario.idade = idade;
+    funcionario.idade = Number(idade);
     funcionario.cargo = cargo;
     await funcionario.save();
 
