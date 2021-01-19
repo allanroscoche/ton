@@ -6,6 +6,27 @@ resource "aws_cloudwatch_log_group" "logs" {
   name = "ton-poc-logs" 
 }
 
+#######################################
+# DynamoDB 
+#######################################
+resource "aws_dynamodb_table" "ddbtable" {
+  name             = "ton-db"
+  hash_key         = "id"
+  billing_mode   = "PROVISIONED"
+  read_capacity  = 1
+  write_capacity = 1
+  attribute {
+    name = "id"
+    type = "S"
+  }
+}
+data template_file "dynamodb_policy" {
+  template = file("policy.json.tpl")
+  vars = {
+    dynamodb = aws_dynamodb_table.ddbtable.arn
+  }
+}
+
 ###################
 # HTTP API Gateway
 ###################
@@ -76,7 +97,7 @@ module "lambda_function_cria_funcionario" {
   publish = true
 
   attach_policy_json = true
-  policy_json = file("policy.json")
+  policy_json = data.template_file.dynamodb_policy.rendered
 
   allowed_triggers = {
     AllowExecutionFromAPIGateway = {
@@ -98,7 +119,7 @@ module "lambda_function_consulta_funcionario" {
   publish = true
 
   attach_policy_json = true
-  policy_json = file("policy.json")
+  policy_json = data.template_file.dynamodb_policy.rendered
 
   allowed_triggers = {
     AllowExecutionFromAPIGateway = {
@@ -120,7 +141,7 @@ module "lambda_function_apaga_funcionario" {
   publish = true
 
   attach_policy_json = true
-  policy_json = file("policy.json")
+  policy_json = data.template_file.dynamodb_policy.rendered
 
   allowed_triggers = {
     AllowExecutionFromAPIGateway = {
@@ -142,7 +163,7 @@ module "lambda_function_atualiza_funcionario" {
   publish = true
 
   attach_policy_json = true
-  policy_json = file("policy.json")
+  policy_json = data.template_file.dynamodb_policy.rendered
 
   allowed_triggers = {
     AllowExecutionFromAPIGateway = {
@@ -155,18 +176,5 @@ module "lambda_function_atualiza_funcionario" {
 
 
 
-#######################################
-# DynamoDB 
-#######################################
-resource "aws_dynamodb_table" "ddbtable" {
-  name             = "ton-db"
-  hash_key         = "id"
-  billing_mode   = "PROVISIONED"
-  read_capacity  = 1
-  write_capacity = 1
-  attribute {
-    name = "id"
-    type = "S"
-  }
-}
+
 

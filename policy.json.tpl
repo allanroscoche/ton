@@ -12,7 +12,7 @@
      "dynamodb:UpdateItem",
      "dynamodb:DeleteItem"
     ],
-    "Resource": "arn:aws:dynamodb:us-east-1:669675070816:table/ton-db"
+    "Resource": "${dynamodb}"
    }
   ]
 }
