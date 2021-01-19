@@ -7,3 +7,7 @@ output "this_dynamodb_table_policy" {
   description = "The policy of the lambda function"
   value       = data.template_file.dynamodb_policy.rendered
 }
+resource "local_file" "endpoint" {
+  content = module.api_gateway.this_apigatewayv2_api_api_endpoint
+  filename = "endpoint.txt"
+}

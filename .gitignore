@@ -3,3 +3,4 @@ terraform.tfstate.backup
 terraform.tfstate
 builds
 node_modules
+endpoint.txt
