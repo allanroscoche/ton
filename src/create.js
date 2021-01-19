@@ -1,6 +1,7 @@
 const Funcionario = require("./funcionario");
+const parseBody = require("./parsebody");
 
-function parseBody(query) {
+function parseBody2(query) {
   let buff = Buffer.from(query, "base64");
   let eventBodyStr = buff.toString('UTF-8');
   let eventBody = {};
